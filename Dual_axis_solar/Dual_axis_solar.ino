@@ -1,3 +1,4 @@
+// Rushik Patel
 #include <Servo.h> 
 
 // horizontal servo--------------------------------------
