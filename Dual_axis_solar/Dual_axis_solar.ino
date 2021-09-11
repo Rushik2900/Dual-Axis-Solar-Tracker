@@ -1,12 +1,22 @@
 #include <Servo.h> 
+
+// horizontal servo--------------------------------------
 Servo horizontal;   
-int servoh = 120;       
+int servoh = 120;   // 120;     // stand horizontal servo
+
 int servohLimitHigh = 180;
 int servohLimitLow = 65;
+
+// vertical servo-----------------------------------------
 Servo vertical;      
-int servov = 45;   
+int servov = 45;    //   45;     // stand vertical servo
+
 int servovLimitHigh = 80;
 int servovLimitLow = 15;
+
+
+// LDR pin connections-------------------------------------
+// all are analogpins;
 int ldrlt = 0;    //LDR top left  
 int ldrrt = 1;    //LDR top rigt 
 int ldrld = 2;    //LDR down left
@@ -15,8 +25,10 @@ int ldrrd = 3;    //ldr down rigt
 void setup()
 {
   Serial.begin(9600);
+  // servo connections
   horizontal.attach(9); 
   vertical.attach(10);
+  // initial position of servo
   horizontal.write(servoh);
   vertical.write(servov);
   delay(3000);
@@ -27,22 +39,23 @@ void loop()
  
 
 
-  int lt = analogRead(ldrlt);   
-  int rt = analogRead(ldrrt);   
-  int ld = analogRead(ldrld);   
-  int rd = analogRead(ldrrd);   
+  int lt = analogRead(ldrlt);   // top left
+  int rt = analogRead(ldrrt);   // top right
+  int ld = analogRead(ldrld);   // down left
+  int rd = analogRead(ldrrd);   // down rigt
   
   int dtime = 10;
   int tol = 50;
   
-  int avt = (lt + rt) / 2;      
-  int avd = (ld + rd) / 2;       
-  int avl = (lt + ld) / 2;      
-  int avr = (rt + rd) / 2;      
+  int avt = (lt + rt) / 2;      // average top value 
+  int avd = (ld + rd) / 2;      // average down value 
+  int avl = (lt + ld) / 2;      // average left value 
+  int avr = (rt + rd) / 2;      // average right value 
 
-  int dvert = avt - avd;       
-  int dhoriz = avl - avr;      
- 
+  int dvert = avt - avd;        // Diffirence of up and down
+  int dhoriz = avl - avr;       // Diffirence of left and rigt
+  
+  
   Serial.print(avt);
   Serial.print(" ");
   Serial.print(avd);
@@ -57,7 +70,7 @@ void loop()
   Serial.print(" ");
   
     
-  if (-1*tol > dvert || dvert > tol)    
+  if (-1*tol > dvert || dvert > tol)    // check if the diffirence is in the tolerance else change vertical angle
   {
   if (avt > avd)
   {
@@ -78,7 +91,7 @@ void loop()
   vertical.write(servov);
   }
   
-  if (-1*tol > dhoriz || dhoriz > tol)     
+  if (-1*tol > dhoriz || dhoriz > tol)      // check if the diffirence is in the tolerance else change horizontal angle
   {
     if (avl > avr)
     {
